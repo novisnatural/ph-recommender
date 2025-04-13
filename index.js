@@ -1,10 +1,13 @@
 import express from 'express';
 import axios from 'axios';
 import cors from 'cors';
+import multer from 'multer';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 const SHOPIFY_DOMAIN = 'tdih5u-ie.myshopify.com';
 const ADMIN_TOKEN = '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'; // Reemplaza esto con tu token real
@@ -74,6 +77,25 @@ app.post('/api/recommendations', async (req, res) => {
   } catch (error) {
     console.error('Error:', error.message);
     res.status(500).json({ error: 'Error procesando la solicitud' });
+  }
+});
+
+// Nueva ruta para análisis de piel desde imagen
+app.post('/api/skin-analysis', upload.single('photo'), async (req, res) => {
+  try {
+    const imageBuffer = req.file.buffer;
+
+    // 🔬 Simulación de análisis (IA se puede agregar luego)
+    const simulatedResult = {
+      skin_type: 'Grasa',
+      analysis: 'Brillo visible en frente y nariz',
+      recommendation: 'Perfumes frescos o cítricos ayudan a equilibrar la oleosidad'
+    };
+
+    return res.json(simulatedResult);
+  } catch (error) {
+    console.error('Error en análisis de piel:', error);
+    res.status(500).json({ error: 'No se pudo analizar la imagen' });
   }
 });
 
