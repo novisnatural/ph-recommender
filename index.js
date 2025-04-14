@@ -41,7 +41,7 @@ const extractNotes = (bodyHtml) => {
 
 app.post('/api/recommendations', async (req, res) => {
   try {
-    const { ph = 5.3 } = req.body;
+    const { ph = 5.3, skinType, texture, zones, temperature, humidity, season } = req.body;
     const endpoint = `https://${SHOPIFY_DOMAIN}/admin/api/2023-10/products.json?limit=50`;
 
     const response = await axios.get(endpoint, {
