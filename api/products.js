@@ -1,11 +1,7 @@
-// /api/products.js
+// api/products.js
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).send('Method Not Allowed');
-  }
-
   try {
     const shop = 'tdih5u-ie.myshopify.com';
     const accessToken = process.env.SHOPIFY_API_TOKEN;
@@ -19,9 +15,8 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    // Extraer perfumes relevantes con notas olfativas
     const perfumes = data.products.map(product => {
-      const html = product.body_html;
+      const html = product.body_html || '';
 
       const extractNote = (label) => {
         const match = html.match(new RegExp(`${label}:\\s*(.*?)<`, 'i'));
@@ -39,10 +34,9 @@ export default async function handler(req, res) {
           ...extractNote('Base Notes'),
         ],
         image: product.image?.src || null,
-        handle: product.handle,
         url: `https://${shop}/products/${product.handle}`,
       };
-    }).filter(p => p.available); // Solo perfumes disponibles
+    }).filter(p => p.available);
 
     res.status(200).json(perfumes);
   } catch (err) {
