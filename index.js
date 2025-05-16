@@ -9,8 +9,8 @@ app.use(express.json());
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-const SHOPIFY_DOMAIN = 'tdih5u-ie.myshopify.com';
-const ADMIN_TOKEN = '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'; // Reemplaza esto con tu token real
+const SHOPIFY_DOMAIN = '.myshopify.com';
+const ADMIN_TOKEN = 'shpat_'; // Reemplaza esto con tu token real
 
 const classifyPH = (ph) => {
   if (ph < 5.1) return 'Muy ácido';
